@@ -3,62 +3,61 @@ import DateTimePicker from 'react-datetime-picker';
 import axios from "axios";
 
 const Home = () => {
+    const now = new Date();
+
     const [date, setDate] = useState(new Date());
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const [disabled, setDisabled] = useState(true);
-
-    const now = new Date();
-    const schedules = [
-        {
+    const [schedules, setSchedules] = useState(
+        [{
             title: "9 AM",
             available: true,
             value: 9
         },
-        {
-            title: "10 AM",
-            available: false,
-            value: 10
-        },
-        {
-            title: "11 AM",
-            available: true,
-            value: 11
-        },
-        {
-            title: "12 PM",
-            available: true,
-            value: 12
-        }, {
+            {
+                title: "10 AM",
+                available: true,
+                value: 10
+            },
+            {
+                title: "11 AM",
+                available: true,
+                value: 11
+            },
+            {
+                title: "12 PM",
+                available: true,
+                value: 12
+            }, {
             title: "13 PM",
-            available: false,
+            available: true,
             value: 13
         },
-        {
-            title: "14 PM",
-            available: true,
-            value: 14
-        },
-        {
-            title: "15 PM",
-            available: true,
-            value: 15
-        },
-        {
-            title: "16 PM",
-            available: false,
-            value: 16
-        },
-        {
-            title: "17 PM",
-            available: true,
-            value: 17
-        },
-    ];
+            {
+                title: "14 PM",
+                available: true,
+                value: 14
+            },
+            {
+                title: "15 PM",
+                available: true,
+                value: 15
+            },
+            {
+                title: "16 PM",
+                available: true,
+                value: 16
+            },
+            {
+                title: "17 PM",
+                available: true,
+                value: 17
+            }]);
 
     useEffect(() => {
         getSchedules();
-    }, [date]);
+    }, [date, schedules]);
 
     const handleOnClick = async () => {
         try {
@@ -81,7 +80,19 @@ const Home = () => {
         try {
             const formatDate = `${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`;
             const res = await axios.get(`/api/appointments/${formatDate}`);
-            console.log(res.data);
+            const appointments = res.data;
+
+            if (appointments.length > 0) {
+                appointments.map(a => {
+                    setSchedules(schedules.map(s => {
+                        if (a.startTime === s.value) {
+                            return {...s, available: false}
+                        }
+
+                        return s;
+                    }))
+                });
+            }
         } catch (e) {
             console.log("Error", e);
         }
