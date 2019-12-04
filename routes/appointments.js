@@ -15,6 +15,18 @@ router.get("/", async (req, res) => {
     ;
 });
 
+// @route GET api/appointments/date
+// @desc Get appointments by date
+// @access Public
+router.get("/:date", async (req, res) => {
+    try {
+        const appointments = await Appointment.find({ formatDate: req.params.date});
+        await res.json(appointments);
+    } catch (e) {
+        res.status(500).send("Server Error.");
+    }
+});
+
 // @route POST api/appointments
 // desc Add new appointment
 // @access Public

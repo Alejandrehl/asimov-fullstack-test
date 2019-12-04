@@ -66,9 +66,9 @@ const Home = () => {
             const startTime = date.getHours();
             const data = {
                 email,
-                date: date,
-                formatDate: formatDate,
-                startTime: startTime
+                date,
+                formatDate,
+                startTime
             }
             const res = await axios.post("/api/appointments", data);
             console.log(res.data);
@@ -79,7 +79,8 @@ const Home = () => {
 
     const getSchedules = async () => {
         try {
-            const res = await axios.get("/api/appointments");
+            const formatDate = `${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`;
+            const res = await axios.get(`/api/appointments/${formatDate}`);
             console.log(res.data);
         } catch (e) {
             console.log("Error", e);
