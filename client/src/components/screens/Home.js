@@ -57,10 +57,28 @@ const Home = () => {
     ];
 
     useEffect(() => {
-        axios.get("/api/appointments")
-            .then(res => console.log("RES", res))
-            .catch(e => console.log("Err", e));
+        getSchedules();
+        console.log(date);
     }, [date]);
+
+    const handleOnClick = async () => {
+        try {
+            const data = {email, date};
+            const res = await axios.post("/api/appointments", data);
+            console.log(res.data);
+        } catch (e) {
+            console.log("Error", e);
+        }
+    };
+
+    const getSchedules = async () => {
+        try {
+            const res = await axios.get("/api/appointments");
+            console.log(res.data);
+        } catch (e) {
+            console.log("Error", e);
+        }
+    };
 
     const renderSchedules = () => {
         return (
@@ -119,10 +137,6 @@ const Home = () => {
 
     const isValidEmail = text => {
         return !!text.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-    };
-
-    const handleOnClick = () => {
-        console.log(email, date);
     };
 
     return (
