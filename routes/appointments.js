@@ -8,6 +8,7 @@ const Appointment = require("../models/Appointment");
 router.get("/", async (req, res) => {
     try {
         const appointments = await Appointment.find();
+        await res.json(appointments);
     } catch (e) {
         res.status(500).send("Server Error.");
     }

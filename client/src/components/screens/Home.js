@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import DateTimePicker from 'react-datetime-picker';
+import axios from "axios";
 
 const Home = () => {
     const [date, setDate] = useState(new Date());
@@ -56,7 +57,9 @@ const Home = () => {
     ];
 
     useEffect(() => {
-        console.log(date);
+        axios.get("/api/appointments")
+            .then(res => console.log("RES", res))
+            .catch(e => console.log("Err", e));
     }, [date]);
 
     const renderSchedules = () => {
