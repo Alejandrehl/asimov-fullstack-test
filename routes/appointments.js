@@ -19,11 +19,13 @@ router.get("/", async (req, res) => {
 // desc Add new appointment
 // @access Public
 router.post("/", async (req, res) => {
-    const {email, date} = req.body;
+    const {email, date, formatDate, startTime} = req.body;
     try {
         const newAppointment = new Appointment({
             email,
-            date
+            date,
+            formatDate,
+            startTime
         });
 
         const appointment = await newAppointment.save();

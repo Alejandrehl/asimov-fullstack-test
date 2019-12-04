@@ -58,12 +58,18 @@ const Home = () => {
 
     useEffect(() => {
         getSchedules();
-        console.log(date);
     }, [date]);
 
     const handleOnClick = async () => {
         try {
-            const data = {email, date};
+            const formatDate = `${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`;
+            const startTime = date.getHours();
+            const data = {
+                email,
+                date: date,
+                formatDate: formatDate,
+                startTime: startTime
+            }
             const res = await axios.post("/api/appointments", data);
             console.log(res.data);
         } catch (e) {
